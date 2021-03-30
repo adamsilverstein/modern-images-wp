@@ -184,9 +184,9 @@ class Setting {
 	public function get_sub_settings() {
 		return array(
 			array(
-				'id'          => 'modern_image_output_format',
-				'title'       => __( 'Image output format', 'wordpress-modern-images' ),
-				'description' => __( 'If this is configured to override, the checkboxes below can be used to control the enabled feature flags.', 'wordpress-modern-images' ),
+				'id'          => 'modern_image_jpeg_output_format',
+				'title'       => __( 'JPEG output format', 'wordpress-modern-images' ),
+				'description' => __( 'Uploaded JPEG images will be output in this format.', 'wordpress-modern-images' ),
 				'section'     => 'modernimageformats',
 				'choices'     => array(
 					'' => __( 'Use original format (default)', 'wordpress-modern-images' ),
