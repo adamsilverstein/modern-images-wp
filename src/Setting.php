@@ -31,7 +31,7 @@ class Setting {
 				);
 				add_settings_section(
 					'modernimageformats',
-					__( 'Output image format', 'wordpress-modern-images' ),
+					__( 'Image output format', 'wordpress-modern-images' ),
 					$this->get_sanitize_callback(),
 					'media'
 				);
@@ -39,6 +39,9 @@ class Setting {
 				$sub_settings = $this->get_sub_settings();
 
 				foreach ( $sub_settings as $sub_setting ) {
+					if ( ! isset( $sub_setting['id'] ) ) {
+						continue;
+					}
 					add_settings_field(
 						$sub_setting['id'],
 						$sub_setting['title'],
@@ -182,20 +185,44 @@ class Setting {
 	 * @return array List of associative setting definition arrays.
 	 */
 	public function get_sub_settings() {
-		return array(
-			array(
-				'id'          => 'modern_image_jpeg_output_format',
-				'title'       => __( 'JPEG output format', 'wordpress-modern-images' ),
-				'description' => __( 'Uploaded JPEG images will be output in this format.', 'wordpress-modern-images' ),
-				'section'     => 'modernimageformats',
-				'choices'     => array(
+		$mime_types = get_allowed_mime_types();
+
+		$allowed_image_mime_types = array_filter( $mime_types, function( $type ) {
+			return 0 === strpos( $type, 'image' );
+		} );
+
+		$potential_types = array(
+			"image/jpeg",
+			"image/gif",
+			"image/png",
+			"image/bmp",
+			"image/tiff",
+			"image/webp",
+			"image/avif",
+			"image/jpegxl",
+		);
+
+		$image_options = array_intersect( $potential_types, $allowed_image_mime_types );
+
+		$options = array_map( function( $type ) {
+				$format = str_replace( 'image/', '', $type );
+				$choices =array(
 					'' => __( 'Use original format (default)', 'wordpress-modern-images' ),
 					'image/webp' => __( 'WebP', 'wordpress-modern-images' ),
 					'image/avif' => __( 'AVIF', 'wordpress-modern-images' ),
 					'image/jpegxl' => __( 'JPEG XL', 'wordpress-modern-images' ),
-				),
-			),
-		);
+
+				);
+				return array(
+					'id'          => sprintf( 'modern_image_%s_output_format', $format ),
+					'title'       => sprintf( __( 'For %s images', 'wordpress-modern-images' ), lcfirst( $format ) ),
+					'description' => sprintf( __( 'Uploaded %s images will be output in this format.', 'wordpress-modern-images' ), lcfirst( $format ) ),
+					'section'     => 'modernimageformats',
+					'choices'     => $choices,
+				);
+			}, $image_options );
+
+		return $options;
 	}
 
 	/**
@@ -215,6 +242,9 @@ class Setting {
 			}
 
 			foreach ( $sub_settings as $sub_setting ) {
+				if ( ! isset( $sub_setting['id'] ) ){
+					continue;
+				}
 				if ( ! empty( $sub_setting['multiple'] ) ) {
 					if ( ! isset( $value[ $sub_setting['id'] ] ) || ! is_array( $value[ $sub_setting['id'] ] ) ) {
 						$value[ $sub_setting['id'] ] = array();
