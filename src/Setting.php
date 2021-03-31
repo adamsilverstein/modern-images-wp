@@ -31,7 +31,7 @@ class Setting {
 				);
 				add_settings_section(
 					'modernimageformats',
-					__( 'Image output format', 'wordpress-modern-images' ),
+					__( 'Modern image output format', 'wordpress-modern-images' ),
 					$this->get_sanitize_callback(),
 					'media'
 				);
