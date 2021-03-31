@@ -214,7 +214,7 @@ class Setting {
 
 				);
 				return array(
-					'id'          => sprintf( 'modern_image_%s_output_format', $format ),
+					'id'          => sprintf( 'modern_image_output_format_for_%s', $format ),
 					'title'       => sprintf( __( 'For %s images', 'wordpress-modern-images' ), lcfirst( $format ) ),
 					'description' => sprintf( __( 'Uploaded %s images will be output in this format.', 'wordpress-modern-images' ), lcfirst( $format ) ),
 					'section'     => 'modernimageformats',

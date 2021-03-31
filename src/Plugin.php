@@ -76,10 +76,14 @@ class Plugin {
 		$this->setting->register();
 
 		// Filter the default output format.
-		$format = $this->setting->get();
-		if ( ! empty( $format ) && isset( $format['modern_image_jpeg_output_format'] ) ) {
+		$format_setting = $this->setting->get();
+		if ( ! empty( $format_setting ) ) {
 			add_filter( 'wp_image_editor_output_format', function( $formats ) {
-				$formats['image/jpeg'] = $format['modern_image_jpeg_output_format'];
+				$format_setting = $this->setting->get();
+				foreach( $format_setting as $setting => $value) {
+					$source = 'image/' . str_replace( 'modern_image_output_format_for_', '', $setting );
+					$formats[ $source ] = $value;
+				}
 				return $formats;
 			} );
 		}
