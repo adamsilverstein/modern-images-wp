@@ -235,6 +235,35 @@ class Setting {
 	public function get_sanitize_callback() {
 		return function( $value ) {
 
+			// Echo out some image support information.
+			$image_info = array(
+				'gd_info'        => extension_loaded( 'gd' ) ? gd_info() : array(),
+				'imagick_info'   => extension_loaded( 'imagick' ) ? \Imagick::queryFormats() : array(),
+			);
+
+
+			if ( ! empty ( $image_info['gd_info'] ) ) {
+				$gd_supports_webp = isset( $image_info['gd_info']['WebP Support'] ) && $image_info['gd_info']['WebP Support'];
+				$gd_supports_avif = isset( $image_info['gd_info']['AVIF Support'] ) && $image_info['gd_info']['AVIF Support'];
+				$gd_supports_jpegxl = isset( $image_info['gd_info']['JPEGXL Support'] ) && $image_info['gd_info']['JPEGXL Support'];
+				echo sprintf(
+					'<strong>LibGD supported formats</strong>:%s%s%s<br />',
+					$gd_supports_webp ? " WebP" : "",
+					$gd_supports_avif ? " AVIF" : "",
+					$gd_supports_jpegxl ? " JPEGXL" : ""
+				);
+			}
+			if ( ! empty( $image_info['imagick_info'] ) ) {
+				$imagick_supports_webp = in_array( 'WEBP', $image_info['imagick_info'] );
+				$imagick_supports_avif = in_array( 'AVIF', $image_info['imagick_info'] );
+				$imagick_supports_jpegxl = in_array( 'JPEGXL', $image_info['imagick_info'] );
+				echo sprintf(
+					'<strong>Imagick supported formats</strong>:%s%s%s<br />',
+					$imagick_supports_webp ? " WebP" : "",
+					$imagick_supports_avif ? " AVIF" : "",
+					$imagick_supports_jpegxl ? " JPEGXL" : ""
+				);
+			}
 			$sub_settings = $this->get_sub_settings();
 
 			if ( ! is_array( $value ) ) {
