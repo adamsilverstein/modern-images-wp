@@ -78,7 +78,7 @@ class Plugin {
 		// Filter the default output format.
 		$format_setting = $this->setting->get();
 		if ( ! empty( $format_setting ) ) {
-			add_filter( 'wp_image_editor_output_format', function( $formats ) {
+			add_filter( 'image_editor_output_format', function( $formats ) {
 				$format_setting = $this->setting->get();
 				foreach( $format_setting as $setting => $value) {
 					$source = 'image/' . str_replace( 'modern_image_output_format_for_', '', $setting );
