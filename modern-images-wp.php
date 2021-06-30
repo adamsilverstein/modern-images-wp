@@ -1,19 +1,19 @@
 <?php
 /**
- * WP Modern Images.
+ * Modern Images WP.
  *
  * Enables activating alternate image formats as the default for image sub-sizes
  * created when uploading images and used for front end display.
  *
  * @wordpress-plugin
- * Plugin Name: WP Modern Images
- * Plugin URI:  https://plugins.wordpress.org/wp-modern-images
- * Description: Choose a default image format your server supports: WebP, JPGXL and AVIF.
+ * Plugin Name: Modern Images WP
+ * Plugin URI:  https://plugins.wordpress.org/modern-images-wp
+ * Description: Choose a default format for subsized images. Choose WebP, JPGXL or AVIF when your server image library supports them.
  * Version:     1.0.0
  * Author:      adamsilverstein
  * License:     Apache License 2.0
  * License URI: https://www.apache.org/licenses/LICENSE-2.0
- * Text Domain: wp-modern-images
+ * Text Domain: modern-images-wp
  */
 
 /* This file must be parseable by PHP 5.2. */
@@ -23,14 +23,14 @@
  *
  * @since 1.0.0
  */
-function wordpress_modern_images_load() {
+function modern_images_wp_load() {
 	$src_dir = plugin_dir_path( __FILE__ ) . 'src/';
 
 	require_once $src_dir . 'Plugin.php';
 	require_once $src_dir . 'Setting.php';
 
-	call_user_func( array( 'WordPress_Modern_Images\Plugin', 'load' ), __FILE__ );
+	call_user_func( array( 'Modern_Images_WP\Plugin', 'load' ), __FILE__ );
 }
 
 
-add_action( 'plugins_loaded', 'wordpress_modern_images_load' );
+add_action( 'plugins_loaded', 'modern_images_wp_load' );

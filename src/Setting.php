@@ -1,5 +1,5 @@
 <?php
-namespace WordPress_Modern_Images;
+namespace Modern_Images_WP;
 
 /**
  * Class representing the settings.
@@ -14,8 +14,8 @@ class Setting {
 	 * @since 1.0.0
 	 * @var string
 	 */
-	const OPTION_NAME = 'wp-modern-images-setting';
-	const SLUG = 'wp-modern-images';
+	const OPTION_NAME = 'modern-images-wp-setting';
+	const SLUG = 'modern-images-wp';
 	/**
 	 * Registers the setting with WordPress.
 	 *
@@ -31,7 +31,7 @@ class Setting {
 				);
 				add_settings_section(
 					'modernimageformats',
-					__( 'Modern image output format', 'wp-modern-images' ),
+					__( 'Modern image output format', 'modern-images-wp' ),
 					$this->get_sanitize_callback(),
 					'media'
 				);
@@ -207,16 +207,16 @@ class Setting {
 		$options = array_map( function( $type ) {
 				$format = str_replace( 'image/', '', $type );
 				$choices =array(
-					'' => __( 'Use original format (default)', 'wp-modern-images' ),
-					'image/webp' => __( 'WebP', 'wp-modern-images' ),
-					'image/avif' => __( 'AVIF', 'wp-modern-images' ),
-					'image/jpegxl' => __( 'JPEG XL', 'wp-modern-images' ),
+					'' => __( 'Use original format (default)', 'modern-images-wp' ),
+					'image/webp' => __( 'WebP', 'modern-images-wp' ),
+					'image/avif' => __( 'AVIF', 'modern-images-wp' ),
+					'image/jpegxl' => __( 'JPEG XL', 'modern-images-wp' ),
 
 				);
 				return array(
 					'id'          => sprintf( 'modern_image_output_format_for_%s', $format ),
-					'title'       => sprintf( __( 'For %s images', 'wp-modern-images' ), lcfirst( $format ) ),
-					'description' => sprintf( __( 'Uploaded %s images will be output in this format.', 'wp-modern-images' ), lcfirst( $format ) ),
+					'title'       => sprintf( __( 'For %s images', 'modern-images-wp' ), lcfirst( $format ) ),
+					'description' => sprintf( __( 'Uploaded %s images will be output in this format.', 'modern-images-wp' ), lcfirst( $format ) ),
 					'section'     => 'modernimageformats',
 					'choices'     => $choices,
 				);
