@@ -114,6 +114,7 @@ class Setting {
 											<option
 												value="<?php echo esc_attr( $option_value ); ?>"
 												<?php
+												disabled( $this->isImageFormatSupported( $option_value ), false );
 												$this->selected_attr( $value, $option_value );
 												?>
 											>
@@ -161,6 +162,45 @@ class Setting {
 				}
 			}
 		);
+	}
+
+	/**
+	 * Check if an image type is available.
+	 *
+	 * @param $format string The image format to check.
+	 */
+	private function isImageFormatSupported( $format ){
+		if ( "" === $format ) {
+			return true;
+		}
+
+		$choices =array(
+			'image/webp'   => 'WebP',
+			'image/avif'   => 'AVIF',
+			'image/jpegxl' => 'JPEGXL',
+		);
+
+		if ( ! isset( $choices[ $format ] ) ){
+			return false;
+		}
+
+		$format = $choices[ $format ];
+		$image_editor = _wp_image_editor_choose();
+		$image_info = array(
+			'gd_info'        => extension_loaded( 'gd' ) ? gd_info() : array(),
+			'imagick_info'   => extension_loaded( 'imagick' ) ? \Imagick::queryFormats() : array(),
+		);
+
+		if ( $image_editor === 'WP_Image_Editor_Imagick' && ! empty( $image_info['imagick_info'] ) ) {
+			return in_array( str_to_upper( $format ), $image_info['imagick_info'] );
+		}
+
+		if ( $image_editor === 'WP_Image_Editor_GD' && ! empty( $image_info['gd_info'] ) ) {
+			$supports = sprintf( '%s Support', $format );
+			return isset( $image_info['gd_info'][ $supports ] ) && $image_info['gd_info'][ $supports ];
+		}
+
+		return false;
 	}
 
 	/**
@@ -240,7 +280,6 @@ class Setting {
 				'gd_info'        => extension_loaded( 'gd' ) ? gd_info() : array(),
 				'imagick_info'   => extension_loaded( 'imagick' ) ? \Imagick::queryFormats() : array(),
 			);
-
 
 			if ( ! empty ( $image_info['gd_info'] ) ) {
 				$gd_supports_webp = isset( $image_info['gd_info']['WebP Support'] ) && $image_info['gd_info']['WebP Support'];
