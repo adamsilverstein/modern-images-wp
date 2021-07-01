@@ -5,7 +5,7 @@ on:
     - main
 jobs:
   master:
-    name: Push to masmainter
+    name: Push to main
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@main
