@@ -6,14 +6,17 @@
  * created when uploading images and used for front end display.
  *
  * @wordpress-plugin
- * Plugin Name: Modern Images WP
- * Plugin URI:  https://plugins.wordpress.org/modern-images-wp
- * Description: Choose a default format for subsized images. Choose WebP, JPGXL or AVIF when your server image library supports them.
- * Version:     1.0.0
- * Author:      adamsilverstein
- * License:     Apache License 2.0
- * License URI: https://www.apache.org/licenses/LICENSE-2.0
- * Text Domain: modern-images-wp
+ * Plugin Name:       Modern Images WP
+ * Plugin URI:        https://plugins.wordpress.org/modern-images-wp
+ * Description:       Choose a default format for subsized images. Choose WebP, JPGXL or AVIF when your server image library supports them.
+ * Version:           1.0.0
+ * Requires at least: 5.8
+ * Requires PHP:      5.6
+ * Author:            adamsilverstein
+ * Author URI:        https://github.com/adamsilverstein
+ * License:           Apache License 2.0
+ * License URI:       https://www.apache.org/licenses/LICENSE-2.0
+ * Text Domain:       modern-images-wp
  */
 
 /* This file must be parseable by PHP 5.2. */
