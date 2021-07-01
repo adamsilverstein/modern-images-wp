@@ -1,5 +1,5 @@
 <?php
-namespace WordPress_Modern_Images;
+namespace Modern_Images_WP;
 
 /**
  * Main class for the plugin.
