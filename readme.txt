@@ -3,8 +3,8 @@ Contributors:  adamsilverstein
 Tags:          modern images, webp, avif, jpegxl
 Tested up to:  5.8
 Stable tag:    1.0.0
-License:       GPLv2 or later
-License URI:   http://www.gnu.org/licenses/gpl-2.0.html
+License:       Apache License 2.0
+License URI:   https://www.apache.org/licenses/LICENSE-2.0
 
 Modern images for WordPress.
 
