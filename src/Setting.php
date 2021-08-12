@@ -192,7 +192,7 @@ class Setting {
 		);
 
 		if ( $image_editor === 'WP_Image_Editor_Imagick' && ! empty( $image_info['imagick_info'] ) ) {
-			return in_array( str_to_upper( $format ), $image_info['imagick_info'] );
+			return in_array( strtoupper( $format ), $image_info['imagick_info'] );
 		}
 
 		if ( $image_editor === 'WP_Image_Editor_GD' && ! empty( $image_info['gd_info'] ) ) {
