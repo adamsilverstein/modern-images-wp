@@ -2,7 +2,7 @@
 Contributors:  adamsilverstein
 Tags:          modern images, webp, avif, jpegxl
 Tested up to:  5.8
-Stable tag:    1.0.1
+Stable tag:    1.0.2
 License:       Apache License 2.0
 License URI:   https://www.apache.org/licenses/LICENSE-2.0
 
