@@ -24,7 +24,7 @@ class Setting {
 	/**
 	 * The supported image format mime types and their name.
 	 *
-	 * @since 1.0.2
+	 * @since 1.0.3
 	 */
 	const IMAGE_FORMATS = array(
 		'image/webp'   => 'WebP',
@@ -198,7 +198,7 @@ class Setting {
 		// Format is the internal name for the image mime type.
 		$format = self::IMAGE_FORMATS[ $mime_type ];
 
-		// Check the image editor WordPress uses for this format.
+		// Check the image editor WordPress uses for this mime type.
 		$image_editor = _wp_image_editor_choose( array( 'mime_type' => $mime_type ) );
 		$image_info = array(
 			'gd_info'        => extension_loaded( 'gd' ) ? gd_info() : array(),
