@@ -9,7 +9,7 @@
  * Plugin Name:       Modern Images WP
  * Plugin URI:        https://plugins.wordpress.org/modern-images-wp
  * Description:       Choose a default format for subsized images. Choose WebP, JPGXL or AVIF when your server image library supports them.
- * Version:           1.0.2
+ * Version:           1.0.3
  * Requires at least: 5.8
  * Requires PHP:      5.6
  * Author:            adamsilverstein
