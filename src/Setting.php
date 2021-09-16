@@ -14,8 +14,24 @@ class Setting {
 	 * @since 1.0.0
 	 * @var string
 	 */
-	const OPTION_NAME = 'modern-images-wp-setting';
 	const SLUG = 'modern-images-wp';
+
+	/**
+	 * The storage option name.
+	 */
+	const OPTION_NAME = 'modern-images-wp-setting';
+
+	/**
+	 * The supported image format mime types and their name.
+	 *
+	 * @since 1.0.3
+	 */
+	const IMAGE_FORMATS = array(
+		'image/webp'   => 'WebP',
+		'image/avif'   => 'AVIF',
+		'image/jpegxl' => 'JPEGXL',
+	);
+
 	/**
 	 * Registers the setting with WordPress.
 	 *
@@ -114,7 +130,7 @@ class Setting {
 											<option
 												value="<?php echo esc_attr( $option_value ); ?>"
 												<?php
-												disabled( $this->isImageFormatSupported( $option_value ), false );
+												disabled( $this->is_image_format_supported( $option_value ), false );
 												$this->selected_attr( $value, $option_value );
 												?>
 											>
@@ -157,7 +173,7 @@ class Setting {
 						},
 						'media',
 						$sub_setting['section'],
-						! empty( $sub_setting['multiple'] ) ? array() : array( 'label_for' => Setting::OPTION_NAME . '-' . $sub_setting['id'] )
+						! empty( $sub_setting['multiple'] ) ? array() : array( 'label_for' => self::OPTION_NAME . '-' . $sub_setting['id'] )
 					);
 				}
 			}
@@ -167,25 +183,23 @@ class Setting {
 	/**
 	 * Check if an image type is available.
 	 *
-	 * @param $format string The image format to check.
+	 * @param $mime_type string The image mime type to check for support.
 	 */
-	private function isImageFormatSupported( $format ){
-		if ( "" === $format ) {
+	private function is_image_format_supported( $mime_type ){
+		if ( "" === $mime_type ) {
 			return true;
 		}
 
-		$choices =array(
-			'image/webp'   => 'WebP',
-			'image/avif'   => 'AVIF',
-			'image/jpegxl' => 'JPEGXL',
-		);
-
-		if ( ! isset( $choices[ $format ] ) ){
+		// Is the mime type among the choices?
+		if ( ! isset( self::IMAGE_FORMATS[ $mime_type ] ) ){
 			return false;
 		}
 
-		$format = $choices[ $format ];
-		$image_editor = _wp_image_editor_choose();
+		// Format is the internal name for the image mime type.
+		$format = self::IMAGE_FORMATS[ $mime_type ];
+
+		// Check the image editor WordPress uses for this mime type.
+		$image_editor = _wp_image_editor_choose( array( 'mime_type' => $mime_type ) );
 		$image_info = array(
 			'gd_info'        => extension_loaded( 'gd' ) ? gd_info() : array(),
 			'imagick_info'   => extension_loaded( 'imagick' ) ? \Imagick::queryFormats() : array(),
