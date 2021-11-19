@@ -1,5 +1,5 @@
 === Modern Images WP ===
-Contributors:  adamsilverstein
+Contributors:  adamsilverstein, google
 Tags:          modern images, webp, avif, jpegxl
 Tested up to:  5.8
 Stable tag:    1.0.3
