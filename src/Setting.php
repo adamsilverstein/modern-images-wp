@@ -300,7 +300,7 @@ class Setting {
 				$gd_supports_avif = isset( $image_info['gd_info']['AVIF Support'] ) && $image_info['gd_info']['AVIF Support'];
 				$gd_supports_jpegxl = isset( $image_info['gd_info']['JPEGXL Support'] ) && $image_info['gd_info']['JPEGXL Support'];
 				echo sprintf(
-					__('<strong>LibGD supported formats:</strong> %s%s%s<br />', 'modern-images-wp' ),
+					'<strong>' . __( 'LibGD supported formats:', 'modern-images-wp' ) . '</strong>' . ' %s%s%s<br />',
 					$gd_supports_webp ? " WebP" : "",
 					$gd_supports_avif ? " AVIF" : "",
 					$gd_supports_jpegxl ? " JPEGXL" : ""
@@ -311,7 +311,7 @@ class Setting {
 				$imagick_supports_avif = in_array( 'AVIF', $image_info['imagick_info'] );
 				$imagick_supports_jpegxl = in_array( 'JPEGXL', $image_info['imagick_info'] );
 				echo sprintf(
-					__('<strong>Imagick supported formats:</strong> %s%s%s<br />', 'modern-images-wp' ),
+					'<strong>' . __( 'Imagick supported formats:', 'modern-images-wp' ) . '</strong>' . ' %s%s%s<br />',
 					$imagick_supports_webp ? " WebP" : "",
 					$imagick_supports_avif ? " AVIF" : "",
 					$imagick_supports_jpegxl ? " JPEGXL" : ""
