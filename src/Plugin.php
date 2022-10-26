@@ -80,6 +80,13 @@ class Plugin {
 		if ( ! empty( $format_setting ) ) {
 			add_filter( 'image_editor_output_format', array( $this, 'filter_image_editor_output_format' ) );
 		}
+
+		// Enable supported mime types.
+		add_filter( 'mime_types', function( $types ) {
+			$types['avif']   = 'image/avif';
+			$types['jpegxl'] = 'image/jxl';
+			return $types;
+		} );
 	}
 
 	/**
