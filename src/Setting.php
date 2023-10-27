@@ -306,7 +306,7 @@ class Setting {
 				echo sprintf(
 					'%1$s%2$s%3$s: %4$s%5$s%6$s%7$s',
 					'<strong>',
-					__( 'LibGD supported formats', 'modern-images-wp' ),
+					esc_html( __( 'LibGD supported formats', 'modern-images-wp' ) ),
 					'</strong>',
 					$gd_supports_webp ? " WebP" : "",
 					$gd_supports_avif ? " AVIF" : "",
@@ -321,7 +321,7 @@ class Setting {
 				echo sprintf(
 					'%1$s%2$s%3$s: %4$s%5$s%6$s%7$s',
 					'<strong>',
-					__( 'Imagick supported formats', 'modern-images-wp' ),
+					esc_html( __( 'Imagick supported formats', 'modern-images-wp' ) ),
 					'</strong>',
 					$imagick_supports_webp ? " WebP" : "",
 					$imagick_supports_avif ? " AVIF" : "",
