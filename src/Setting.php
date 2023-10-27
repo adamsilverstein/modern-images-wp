@@ -209,7 +209,8 @@ class Setting {
 			return in_array( strtoupper( $format ), $image_info['imagick_info'] );
 		}
 
-		if ( $image_editor === 'WP_Image_Editor_GD' && ! empty( $image_info['gd_info'] ) ) {
+		// Fall back to GD as the default image editor.
+		if (  ! empty( $image_info['gd_info'] ) ) {
 			$supports = sprintf( '%s Support', $format );
 			return isset( $image_info['gd_info'][ $supports ] ) && $image_info['gd_info'][ $supports ];
 		}
