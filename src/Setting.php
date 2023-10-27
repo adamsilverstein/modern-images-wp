@@ -269,8 +269,11 @@ class Setting {
 
 				);
 				return array(
+					/* translators: %s is the image format, e.g. jpeg. */
 					'id'          => sprintf( 'modern_image_output_format_for_%s', $format ),
+					/* translators: %s is the image format, e.g. Jpeg. */
 					'title'       => sprintf( __( 'For %s images', 'modern-images-wp' ), lcfirst( $format ) ),
+					/* translators: %s is the image format, e.g. Jpeg. */
 					'description' => sprintf( __( 'Uploaded %s images will be output in this format.', 'modern-images-wp' ), lcfirst( $format ) ),
 					'section'     => 'modernimageformats',
 					'choices'     => $choices,
