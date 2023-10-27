@@ -269,8 +269,11 @@ class Setting {
 
 				);
 				return array(
+					/* translators: %s is the image format, e.g. jpeg. */
 					'id'          => sprintf( 'modern_image_output_format_for_%s', $format ),
+					/* translators: %s is the image format, e.g. Jpeg. */
 					'title'       => sprintf( __( 'For %s images', 'modern-images-wp' ), lcfirst( $format ) ),
+					/* translators: %s is the image format, e.g. Jpeg. */
 					'description' => sprintf( __( 'Uploaded %s images will be output in this format.', 'modern-images-wp' ), lcfirst( $format ) ),
 					'section'     => 'modernimageformats',
 					'choices'     => $choices,
@@ -301,8 +304,9 @@ class Setting {
 				$gd_supports_avif = isset( $image_info['gd_info']['AVIF Support'] ) && $image_info['gd_info']['AVIF Support'];
 				$gd_supports_jpegxl = isset( $image_info['gd_info']['JPEGXL Support'] ) && $image_info['gd_info']['JPEGXL Support'];
 				echo sprintf(
-					__('%1$sLibGD supported formats:%2$s %3$s%4$s%5$s%6$s', 'modern-images-wp' ),
+					'%1$s%2$s%3$s: %4$s%5$s%6$s%7$s',
 					'<strong>',
+					esc_html( __( 'LibGD supported formats', 'modern-images-wp' ) ),
 					'</strong>',
 					$gd_supports_webp ? " WebP" : "",
 					$gd_supports_avif ? " AVIF" : "",
@@ -315,12 +319,13 @@ class Setting {
 				$imagick_supports_avif = in_array( 'AVIF', $image_info['imagick_info'] );
 				$imagick_supports_jpegxl = in_array( 'JPEGXL', $image_info['imagick_info'] );
 				echo sprintf(
-					__('%1$sImagick supported formats:%2$s %3$s%4$s%5$s%6$s', 'modern-images-wp' ),
+					'%1$s%2$s%3$s: %4$s%5$s%6$s%7$s',
 					'<strong>',
+					esc_html( __( 'Imagick supported formats', 'modern-images-wp' ) ),
 					'</strong>',
-					$gd_supports_webp ? " WebP" : "",
-					$gd_supports_avif ? " AVIF" : "",
-					$gd_supports_jpegxl ? " JPEGXL" : "",
+					$imagick_supports_webp ? " WebP" : "",
+					$imagick_supports_avif ? " AVIF" : "",
+					$imagick_supports_jpegxl ? " JPEGXL" : "",
 					'<br />'
 				);
 			}
