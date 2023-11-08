@@ -14,3 +14,5 @@ jobs:
       uses: actions/checkout@v3
     - name: Run plugin check
       uses: swissspidy/wp-plugin-check-action@main
+      with:
+        exclude-directories: 'env'
