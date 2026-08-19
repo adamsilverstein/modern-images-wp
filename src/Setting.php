@@ -1,6 +1,10 @@
 <?php
 namespace Modern_Images_WP;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Class representing the settings.
  *
@@ -43,12 +47,15 @@ class Setting {
 			function() {
 				register_setting(
 					'media',
-					self::OPTION_NAME
+					self::OPTION_NAME,
+					array(
+						'sanitize_callback' => $this->get_sanitize_callback(),
+					)
 				);
 				add_settings_section(
 					'modernimageformats',
 					__( 'Modern image output format', 'modern-images-wp' ),
-					$this->get_sanitize_callback(),
+					array( $this, 'render_section_description' ),
 					'media'
 				);
 				$option       = $this->get();
@@ -284,6 +291,50 @@ class Setting {
 	}
 
 	/**
+	 * Prints the settings section description, listing the image formats each
+	 * available image library supports.
+	 *
+	 * @since 1.2.1
+	 */
+	public function render_section_description() {
+		$image_info = array(
+			'gd_info'        => extension_loaded( 'gd' ) ? gd_info() : array(),
+			'imagick_info'   => extension_loaded( 'imagick' ) ? \Imagick::queryFormats() : array(),
+		);
+
+		if ( ! empty ( $image_info['gd_info'] ) ) {
+			$gd_supports_webp = isset( $image_info['gd_info']['WebP Support'] ) && $image_info['gd_info']['WebP Support'];
+			$gd_supports_avif = isset( $image_info['gd_info']['AVIF Support'] ) && $image_info['gd_info']['AVIF Support'];
+			$gd_supports_jpegxl = isset( $image_info['gd_info']['JPEGXL Support'] ) && $image_info['gd_info']['JPEGXL Support'];
+			echo sprintf(
+				'%1$s%2$s%3$s: %4$s%5$s%6$s%7$s',
+				'<strong>',
+				esc_html( __( 'LibGD supported formats', 'modern-images-wp' ) ),
+				'</strong>',
+				$gd_supports_webp ? " WebP" : "",
+				$gd_supports_avif ? " AVIF" : "",
+				$gd_supports_jpegxl ? " JPEGXL" : "",
+				'<br />'
+			);
+		}
+		if ( ! empty( $image_info['imagick_info'] ) ) {
+			$imagick_supports_webp = in_array( 'WEBP', $image_info['imagick_info'] );
+			$imagick_supports_avif = in_array( 'AVIF', $image_info['imagick_info'] );
+			$imagick_supports_jpegxl = in_array( 'JPEGXL', $image_info['imagick_info'] );
+			echo sprintf(
+				'%1$s%2$s%3$s: %4$s%5$s%6$s%7$s',
+				'<strong>',
+				esc_html( __( 'Imagick supported formats', 'modern-images-wp' ) ),
+				'</strong>',
+				$imagick_supports_webp ? " WebP" : "",
+				$imagick_supports_avif ? " AVIF" : "",
+				$imagick_supports_jpegxl ? " JPEGXL" : "",
+				'<br />'
+			);
+		}
+	}
+
+	/**
 	 * Gets the sanitize callback for the setting.
 	 *
 	 * @since 1.0.0
@@ -292,73 +343,35 @@ class Setting {
 	 */
 	public function get_sanitize_callback() {
 		return function( $value ) {
-
-			// Echo out some image support information.
-			$image_info = array(
-				'gd_info'        => extension_loaded( 'gd' ) ? gd_info() : array(),
-				'imagick_info'   => extension_loaded( 'imagick' ) ? \Imagick::queryFormats() : array(),
-			);
-
-			if ( ! empty ( $image_info['gd_info'] ) ) {
-				$gd_supports_webp = isset( $image_info['gd_info']['WebP Support'] ) && $image_info['gd_info']['WebP Support'];
-				$gd_supports_avif = isset( $image_info['gd_info']['AVIF Support'] ) && $image_info['gd_info']['AVIF Support'];
-				$gd_supports_jpegxl = isset( $image_info['gd_info']['JPEGXL Support'] ) && $image_info['gd_info']['JPEGXL Support'];
-				echo sprintf(
-					'%1$s%2$s%3$s: %4$s%5$s%6$s%7$s',
-					'<strong>',
-					esc_html( __( 'LibGD supported formats', 'modern-images-wp' ) ),
-					'</strong>',
-					$gd_supports_webp ? " WebP" : "",
-					$gd_supports_avif ? " AVIF" : "",
-					$gd_supports_jpegxl ? " JPEGXL" : "",
-					'<br />'
-				);
-			}
-			if ( ! empty( $image_info['imagick_info'] ) ) {
-				$imagick_supports_webp = in_array( 'WEBP', $image_info['imagick_info'] );
-				$imagick_supports_avif = in_array( 'AVIF', $image_info['imagick_info'] );
-				$imagick_supports_jpegxl = in_array( 'JPEGXL', $image_info['imagick_info'] );
-				echo sprintf(
-					'%1$s%2$s%3$s: %4$s%5$s%6$s%7$s',
-					'<strong>',
-					esc_html( __( 'Imagick supported formats', 'modern-images-wp' ) ),
-					'</strong>',
-					$imagick_supports_webp ? " WebP" : "",
-					$imagick_supports_avif ? " AVIF" : "",
-					$imagick_supports_jpegxl ? " JPEGXL" : "",
-					'<br />'
-				);
-			}
 			$sub_settings = $this->get_sub_settings();
 
 			if ( ! is_array( $value ) ) {
 				$value = array();
 			}
 
+			// Rebuild from the known sub-settings so unrecognized keys are discarded.
+			$sanitized = array();
+
 			foreach ( $sub_settings as $sub_setting ) {
 				if ( ! isset( $sub_setting['id'] ) ){
 					continue;
 				}
+				$id = $sub_setting['id'];
+
 				if ( ! empty( $sub_setting['multiple'] ) ) {
-					if ( ! isset( $value[ $sub_setting['id'] ] ) || ! is_array( $value[ $sub_setting['id'] ] ) ) {
-						$value[ $sub_setting['id'] ] = array();
-						continue;
-					}
-					foreach ( $value[ $sub_setting['id'] ] as $index => $option ) {
-						$value[ $sub_setting['id'] ][ $index ] = sanitize_text_field( $option );
+					$sanitized[ $id ] = array();
+					if ( isset( $value[ $id ] ) && is_array( $value[ $id ] ) ) {
+						foreach ( $value[ $id ] as $index => $option ) {
+							$sanitized[ $id ][ $index ] = sanitize_text_field( $option );
+						}
 					}
 					continue;
 				}
 
-				if ( ! isset( $value[ $sub_setting['id'] ] ) ) {
-					$value[ $sub_setting['id'] ] = '';
-					continue;
-				}
-
-				$value[ $sub_setting['id'] ] = sanitize_text_field( $value[ $sub_setting['id'] ] );
+				$sanitized[ $id ] = isset( $value[ $id ] ) ? sanitize_text_field( $value[ $id ] ) : '';
 			}
 
-			return $value;
+			return $sanitized;
 		};
 	}
 
