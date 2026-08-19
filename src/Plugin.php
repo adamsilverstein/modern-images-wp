@@ -1,6 +1,10 @@
 <?php
 namespace Modern_Images_WP;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Main class for the plugin.
  *

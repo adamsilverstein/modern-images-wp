@@ -19,6 +19,10 @@
  * Text Domain:       modern-images-wp
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /* This file must be parseable by PHP 5.2. */
 
 /**
